@@ -2106,6 +2106,8 @@ skills["DarkPact"] = {
 				life = output.Life
 			end
 		else
+			local chain = activeSkill.skillModList:Sum("BASE", activeSkill.skillCfg, "ChainCountMax")
+			activeSkill.skillModList:NewMod("Damage", "MORE", chain * 100, "Chain")
 			life = activeSkill.skillData.skeletonLife or 0
 		end
 		local add = life * activeSkill.skillData.lifeDealtAsChaos / 100
