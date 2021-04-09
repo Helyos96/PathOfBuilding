@@ -3740,6 +3740,7 @@ function calcs.offence(env, actor, activeSkill)
 			newSkill.skillModList:NewMod("Damage", "MORE", moreDamage, "General's Cry", activeSkill.ModFlags, activeSkill.KeywordFlags)
 			newSkill.skillModList:NewMod("Damage", "INC", exertInc, "General's Cry Exerted Attacks", activeSkill.ModFlags, activeSkill.KeywordFlags)
 			newSkill.skillModList:NewMod("Damage", "MORE", exertMore, "General's Cry Exerted Attacks", activeSkill.ModFlags, activeSkill.KeywordFlags)
+			newSkill.skillModList:NewMod("DoubleDamageChance", "BASE", env.modDB:Sum("BASE", usedSkill.skillCfg, "ExertDoubleDamageChance"))
 			local maxMirageWarriors = 0
 			for i, value in ipairs(env.player.mainSkill.skillModList:Tabulate("BASE", env.player.mainSkill.skillCfg, "GeneralsCryDoubleMaxCount")) do
 				local mod = value.mod
