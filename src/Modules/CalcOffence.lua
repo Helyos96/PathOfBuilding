@@ -3749,7 +3749,10 @@ function calcs.offence(env, actor, activeSkill)
 
 			-- Non-channeled skills only attack once, disregard attack rate
 			if not usedSkill.skillTypes[SkillType.Channelled] then
-				newSkill.skillData.timeOverride = 1
+				newSkill.skillData.timeOverride = output.Cooldown
+			else
+				-- Couldn't find a better way to affect speed from an external source
+				newSkill.skillModList:NewMod("Damage", "MORE", (-1 + (1 / output.Cooldown)) * 100, "General's Cry Cooldown")
 			end
 
 			if usedSkill.skillPartName then
