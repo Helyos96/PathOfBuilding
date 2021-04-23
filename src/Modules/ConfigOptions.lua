@@ -6,6 +6,7 @@
 
 local m_min = math.min
 local m_max = math.max
+local m_floor = math.floor
 
 return {
 	-- Section: General options
@@ -1055,10 +1056,10 @@ return {
 	{ var = "conditionEnemyBleeding", type = "check", label = "Is the enemy Bleeding?", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Bleeding", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierRuptureStacks", type = "count", label = "# of Rupture stacks?", ifCond = "CanInflictRupture", tooltip = "Rupture applies 25% more bleed damage and 25% faster bleeds for 3 seconds, up to 3 stacks", apply = function(val, modList, enemyModList)
+	{ var = "multiplierRuptureStacks", type = "count", label = "# of Rupture stacks?", ifCond = "CanInflictRupture", tooltip = "Rupture applies 25% more bleed damage and makes bleeds expire 25% more quickly for 3 seconds, up to 3 stacks", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:RuptureStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("DamageTaken", "MORE", 25, "Rupture", nil, KeywordFlag.Bleed, { type = "Multiplier", var = "RuptureStack", limit = 3 }, { type = "ActorCondition", actor = "enemy", var = "CanInflictRupture" })
-		modList:NewMod("EnemyBleedDuration", "INC", -25, "Rupture", { type = "Multiplier", var = "RuptureStack", limit = 3, actor = "enemy" }, { type = "ActorCondition", var = "CanInflictRupture" })
+		modList:NewMod("EnemyBleedDuration", "MORE", m_floor(-100 + 100/(1 + m_min(val, 3)*0.25)), "Rupture", { type = "ActorCondition", var = "CanInflictRupture" })
 	end },
 	{ var = "conditionEnemyPoisoned", type = "check", label = "Is the enemy Poisoned?", ifEnemyCond = "Poisoned", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Poisoned", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
